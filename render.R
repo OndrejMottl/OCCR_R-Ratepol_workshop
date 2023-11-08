@@ -45,11 +45,11 @@ render_md_and_html <- function(
 # README -----
 render_md_and_html(file_name = "README", file_name_html = "index")
 
-# pre_workshop -----
-render_md_and_html(file_name = "pre_workshop")
-
 # workshop_info -----
 render_md_and_html(file_name = "workshop_info")
+
+# pre_workshop -----
+render_md_and_html(file_name = "pre_workshop")
 
 # step_by_step_guide -----
 render_md_and_html(file_name = "step_by_step_guide")
