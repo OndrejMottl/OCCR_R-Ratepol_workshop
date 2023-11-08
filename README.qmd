@@ -1,0 +1,23 @@
+---
+title: OCCR R-Ratepol workshop
+format: 
+  gfm:
+    fig-width: 7
+    fig-height: 6
+    wrap: none
+
+---
+
+Materials for R-Ratepol workshop with an focus on non-pollen data at Oeschger Centre for Climate Change Research (OCCR), Bern University
+
+## Overview
+
+This workshop is designed to teach palynologists how to estimate rate-of-vegetation change using `{R-Ratepol}` package. We will show how to get the R package and use it in various scenarios with a not only pollen data.
+
+## Resources
+
+* [Workshop website](https://ondrejmottl.github.io/OCCR_R-Ratepol_workshop/)
+* [GitHub materials for the workshop](https://github.com/OndrejMottl/OCCR_R-Ratepol_workshop)
+* [GitHub repo for the R-Ratepol package](https://bit.ly/R-Ratepol-package)
+* [R-Ratepol-package website](https://hope-uib-bio.github.io/R-Ratepol-package/)
+* [Mottl et al publication in Rev. Paly. Paleobot.: "Rate-of-change analysis in paleoecology revisited: A new approach"](https://bit.ly/RoC-RPP)
