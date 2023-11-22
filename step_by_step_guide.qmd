@@ -335,7 +335,7 @@ Each line is a single potential age-depth model iteration (age-sequence). Green 
 
 ```{r}
 #| label: plot uncertainty matrix
-#| 
+#| fig.height: 10
 (
   fig_age_uncertainties <-
     data_age_uncertainties %>%
@@ -356,7 +356,7 @@ Each line is a single potential age-depth model iteration (age-sequence). Green 
       yintercept = data_levels$depth,
       lty = 2,
       color = "gray50",
-      alpha = 0.5,
+      alpha = 0.1,
       linewidth = 0.1
     ) +
     ggplot2::geom_point(
@@ -377,6 +377,7 @@ We can visualise all age-depth "possible ages" together as the range of values. 
 
 ```{r}
 #| label: plot uncertainty matrix boxplots
+ #| fig.height: 10#| 
 data_age_uncertainties %>%
   ggplot2::ggplot(
     mapping = ggplot2::aes(
@@ -389,7 +390,7 @@ data_age_uncertainties %>%
     yintercept = data_levels$depth,
     lty = 2,
     color = "gray50",
-    alpha = 0.5,
+    alpha = 0.1,
     linewidth = 0.1
   ) +
   ggplot2::geom_boxplot(
