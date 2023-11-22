@@ -276,7 +276,7 @@ Visually check the age-depth models
 
 ```{r}
 #| label: plot Bchron
-plot(sel_bchron)
+Bchron:::plot.BchronologyRun(sel_bchron) # or just simple plot(sel_bchron)
 ```
 
 #### Predict ages
@@ -286,7 +286,10 @@ Let's first extract posterior ages (i.e. possible ages) from the age-depth model
 ```{r}
 #| label: predict ages
 age_position <-
-  Bchron:::predict.BchronologyRun(object = sel_bchron, newPositions = data_levels$depth)
+  Bchron:::predict.BchronologyRun( # or just simple predict(sel_bchron)
+    object = sel_bchron,
+    newPositions = data_levels$depth
+  )
 
 age_uncertainties <-
   age_position %>%
