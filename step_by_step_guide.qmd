@@ -8,10 +8,16 @@ format:
 
 ---
 
-```{r chunk-setup, include=FALSE}
+```{r}
+#| label: chunk setup
+#| include: FALSE 
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  results = "hide",
+  warning = FALSE,
+  message = FALSE,
+  fig.align = "center"
 )
 ```
 
@@ -29,7 +35,8 @@ Please follow the [pre-workshop instructions](https://ondrejmottl.github.io/OCCR
 
 ## Attach packages
 
-```{r pkg-attach, results='hide', warning=FALSE, message=FALSE}
+```{r}
+#| label: attach packages
 library(tidyverse) # general data wrangling and visualisation ✨
 library(pander) # nice tables 😍
 library(RRatepol) # rate-of-vegetation change ! > v1.2.0 ! 📈
@@ -39,7 +46,9 @@ library(janitor) # string cleaning 🧹
 library(here) # for working directory 🗺️
 ```
 
-```{r theme-setup, include=FALSE}
+```{r}
+#| label: theme set
+#| include: FALSE
 ggplot2::theme_set(
   ggplot2::theme_bw() +
     ggplot2::theme(
@@ -57,14 +66,16 @@ Here we have selected the **Chickaree Lake** record (ID = 47613) by Higuera, Phi
 
 Reference paper: Dunnette, P.V., P.E. Higuera, K.K. McLauchlan, K.M. Derr, C.E. Briles, and M.H. Keefe. 2014. Biogeochemical impacts of wildfires over four millennia in a Rocky Mountain subalpine watershed. New Phytologist 203(3):900-912. [DOI: 10.1111/nph.12828]
 
-```{r download_of_data, results='hide', warning=FALSE, message=FALSE}
+```{r}
+#| label: download dataset
 sel_dataset_download <-
   neotoma2::get_downloads(47613)
 ```
 
 ## Prepare the geochemical data
 
-```{r geochemistry_preparation, results='hide', warning=FALSE}
+```{r}
+#| label: prepare geochemical data
 # get samples
 data_samples <-
   neotoma2::samples(sel_dataset_download)  %>% 
@@ -97,7 +108,10 @@ data_units <-
 head(data_community)[, 1:5]
 ```
 
-```{r geochemistry_diplay, echo=FALSE, results='asis', warning=FALSE, message=FALSE}
+```{r}
+#| label: display geochemistry table
+#| echo: FALSE
+#| results: 'asis'
 pander::pandoc.table(head(data_community)[, 1:5])
 ```
 
@@ -105,7 +119,8 @@ Here, we strongly advocate that careful preparation may of the datasets (with ad
 
 We can now try to visualise the taxa per sample_id
 
-```{r geochemistry_vis}
+```{r}
+#| label: geochemistry visualise
 data_community %>%
   tibble::rowid_to_column("ID") %>%
   tidyr::pivot_longer(
@@ -148,7 +163,8 @@ data_community %>%
 
 Extract depth for each level
 
-```{r level_preparion, results='hide', warning=FALSE}
+```{r}
+#| label: level preparation
 data_levels <-
   neotoma2::samples(sel_dataset_download) %>%
   tibble::as_tibble() %>%
@@ -159,7 +175,10 @@ data_levels <-
 head(data_levels)
 ```
 
-```{r level_diplay, echo=FALSE, results='asis', warning=FALSE, message=FALSE}
+```{r}
+#| label: display level
+#| echo: FALSE
+#| results: 'asis'
 pander::pandoc.table(head(data_levels))
 ```
 
@@ -172,18 +191,23 @@ The chronology control table contains all the dates (mostly radiocarbon) to crea
 
 Here we only present a few of the important steps of preparation of the chronology control table. There are many more potential issues, but solving those is not the focus of this workflow.
 
-```{r chron_prepare, results='hide'}
+```{r}
+#| label: get chronology tables
 # First, get the chronologies and check which we want to use used
 sel_chron_control_table_download <-
   neotoma2::chroncontrols(sel_dataset_download)
 
 print(sel_chron_control_table_download)
 ```
-```{r chron_prepare_show, echo=FALSE, results='asis', warning=FALSE, message=FALSE}
+```{r}
+#| label: display chron control tables
+#| echo: FALSE
+#| results: 'asis'
 pander::pandoc.table(head(sel_chron_control_table_download))
 ```
 
-```{r chron_control_prepare, results='hide', warning=FALSE}
+```{r}
+#| label: preparechron control table
 # prepare the table
 data_chron_control_table <-
   sel_chron_control_table_download %>%
@@ -214,12 +238,14 @@ data_chron_control_table <-
 head(data_chron_control_table)
 ```
 
-```{r chron_control_show, echo=FALSE, results='asis', warning=FALSE, message=FALSE}
+```{r}
+#| label: display prepared chron control table
 pander::pandoc.table(head(data_chron_control_table))
 ```
 
 As this is just a toy example, we will use only the iteration multiplier (`i_multiplier`) of `0.1` to reduce the computation time. However, we strongly recommend increasing it to 5 for any normal age-depth model construction.
-```{r bchron, results='hide', warning=FALSE, message=FALSE}
+```{r}
+#| label: run Bchron
 i_multiplier <- 0.1 # increase to 5
 
 # Those are default values suggested by the Bchron package
@@ -248,7 +274,8 @@ sel_bchron <-
 
 Visually check the age-depth models
 
-```{r bchron_figure, results='markup', warning=FALSE}
+```{r}
+#| label: plot Bchron
 plot(sel_bchron)
 ```
 
@@ -256,7 +283,8 @@ plot(sel_bchron)
 
 Let's first extract posterior ages (i.e. possible ages) from the age-depth model.  
 
-```{r age_uncertainties, results='hide', warning=FALSE}
+```{r}
+#| label: predict ages
 age_position <-
   Bchron:::predict.BchronologyRun(object = sel_bchron, newPositions = data_levels$depth)
 
@@ -273,12 +301,17 @@ head(age_uncertainties, n = 8)[, 1:8]
 
 Here we see samples (e.g., 439811, 439812, 439813,...) and their possible ages (age-sequence) with each model iteration (posterior). Each age-sequence is similar but there are differences of tens or hundreds of years. We will call this *the uncertainty matrix*.
 
-```{r age_uncertainties_display, echo=FALSE, results='asis', warning=FALSE, message=FALSE}
+```{r}
+#| label: display uncertainty matrix
+#| echo: FALSE
+#| results: 'asis'
 pander::pandoc.table(head(age_uncertainties, n = 8)[, 1:8])
 ```
+
 We can visualise these "possible ages" (age-sequence) of each iteration.
 
-```{r age_uncertainties_vis_data}
+```{r}
+#| label: data to plot uncertainty matrix
 # create a data.frame for plotting
 data_age_uncertainties <-
   age_uncertainties %>%
@@ -297,7 +330,9 @@ data_age_uncertainties <-
 
 Each line is a single potential age-depth model iteration (age-sequence). Green points represent the radiocarbon dates. Horizontal lines are depths of our samples.
 
-```{r age_uncertainties_vis_lines}
+```{r}
+#| label: plot uncertainty matrix
+#| 
 (
   fig_age_uncertainties <-
     data_age_uncertainties %>%
@@ -337,7 +372,8 @@ Each line is a single potential age-depth model iteration (age-sequence). Green 
 
 We can visualise all age-depth "possible ages" together as the range of values. Here, each line representing one sampled depth in our record.
 
-```{r age_uncertainties_vis_boxplot}
+```{r}
+#| label: plot uncertainty matrix boxplots
 data_age_uncertainties %>%
   ggplot2::ggplot(
     mapping = ggplot2::aes(
@@ -360,7 +396,8 @@ data_age_uncertainties %>%
 
 Let's take the median age of all possible ages (i.e. the estimated age from each age-depth model run) as our default.
 
-```{r age_uncertainties_vis_table, results='hide', warning=FALSE}
+```{r}
+#| label: get median age
 data_levels_predicted <-
   data_levels %>%
   dplyr::mutate(
@@ -374,13 +411,17 @@ data_levels_predicted <-
 head(data_levels_predicted)
 ```
 
-```{r age_uncertainties_vis_table_display, echo=FALSE, results='asis', warning=FALSE, message=FALSE}
+```{r}
+#| label: display median age
+#| echo: FALSE
+#| results: 'asis'
 pander::pandoc.table(head(data_levels_predicted))
 ```
 
 We can visualise the median age by drawing a red line. This age is the age that is often reported in publications but in essence it represents multiple age-depth model runs with smaller or larger age uncertainties throughout the record.
 
-```{r age_uncertainties_vis_median}
+```{r}
+#| label: plot median age
 fig_age_uncertainties +
   ggplot2::geom_point(
     data = data_levels_predicted,
@@ -398,7 +439,8 @@ fig_age_uncertainties +
 
 Let's now make a simple pollen diagram with proportions of the main pollen taxa (x-axis) against our estimated ages along depth (y-axis).
 
-```{r vis_data_with_ages}
+```{r}
+#| label: plot data with ages
 data_community %>%
   dplyr::inner_join(
     data_levels_predicted,
@@ -446,11 +488,13 @@ We will present several scenarios (i.e. approaches) to calculate RoC.
 ### Selection of dissimilarity coefficient 
 
 We can check the units of individual measured values:
-```{r data_units results='hide', warning=FALSE}
+```{r}
+#| label: data units
 data_units
 ```
 
-```{r data_units_display, echo=FALSE, results='asis', warning=FALSE, message=FALSE}
+```{r}
+#| label: display data units
 pander::pandoc.table(data_units)
 ```
 
@@ -460,7 +504,8 @@ As we can see, all measured values are in difrent units. Therefore,for all scena
 
 This is the "Classic" approach that uses each sampled depth in a record (i.e. individual level) to estimate RoC.
 
-```{r roc_sc1, results='hide', warning=FALSE, message=FALSE}
+```{r}
+#| label: scenario 1
 scenario_1 <-
   RRatepol::estimate_roc(
     data_source_community = data_community,
@@ -471,7 +516,8 @@ scenario_1 <-
   )
 ```
 
-```{r roc_sc1_vis, results='markup', echo=TRUE}
+```{r}
+#| label: plot scenario 1
 RRatepol::plot_roc(data_source = scenario_1)
 ```
 
@@ -479,7 +525,8 @@ RRatepol::plot_roc(data_source = scenario_1)
 
 We do the same as in Scenario 1 but now we smooth the community data before calculating RoC. This may be usefull to mitigate the error of measumerments. Specifically, we will add `smooth_method` = "shep" (i.e. Shepard's 5-term filter).
 
-```{r roc_sc2, results='hide', warning=FALSE, message=FALSE}
+```{r}
+#| label: scenario 2
 scenario_2 <-
   RRatepol::estimate_roc(
     data_source_community = data_community,
@@ -491,7 +538,8 @@ scenario_2 <-
   )
 ```
 
-```{r roc_sc2_vis, results='markup', echo=TRUE}
+```{r}
+#| label: plot scenario 2
 RRatepol::plot_roc(data_source = scenario_2)
 ```
 
@@ -501,14 +549,16 @@ We see that the absolute RoC scores are similar ut the pattern changed slightly 
 
 For RoC analysis, it is important to consider age uncertainties. For each iteration, RRatepol will randomly select one age-sequence from the uncertainty matrix (see the age-depth modelling section for more info). 
 
-```{r roc_sc3_rand, results='hide', warning=FALSE, message=FALSE}
-set_randomisations <- 1000
+```{r}
+#| label: set randomisations
+set_randomisations <- 100
 ```
 
 In order to do that we need to increase the number of randomisations. This is again a toy example for a quick computation and therefore we only do 100 randomisations. We would recommend increasing the *set_randomisations* to 10.000 for any real estimation. 
 To speed the process up, you can also set `use_parallel` == `TRUE`, which will use all cores of your computer.
 
-```{r roc_sc3, results='hide', warning=FALSE, message=FALSE}
+```{r}
+#| label: scenario 3
 scenario_3 <-
   RRatepol::estimate_roc(
     data_source_community = data_community,
@@ -521,27 +571,25 @@ scenario_3 <-
     use_parallel = TRUE, # do use parallel computing
     age_uncertainty = age_uncertainties # Add the uncertainty matrix
   )
-
-View(scenario_3)
-
-summary(scenario_3)
 ```
 
 We will now also visualize uncertainty around the RoC scores shown by a grey shadow.
 
-```{r roc_sc3_vis, results='markup', echo=TRUE}
+```{r}
+#| label: plot scenario 3
 RRatepol::plot_roc(data_source = scenario_3)
 ```
 
 Here you can see that the uncertainty (grey shadow) around the RoC scores (black line) increased drastically. This is because we are randomly sampling age and taxa with a small number of randomisations.
 
-### Scenario 5 - Estimating RoC per bin
+### Scenario 4 - Estimating RoC per bin
 
 In order to get rid of the effect of uneven distribution of sampled depths (i.e. levels) in a fossil pollen record, we can bin the data.
 Specifically, we will change the `working_units` from single levels to `"bins"`. Here we select bins of 500 years each instead of the individual levels. Note that one level is randomly selected as a representation of that time bin.
 
-```{r roc_sc5, results='hide', warning=FALSE, message=FALSE}
-scenario_5 <-
+```{r}
+#| label: scenario 4
+scenario_4 <-
   RRatepol::estimate_roc(
     data_source_community = data_community,
     data_source_age = data_levels_predicted,
@@ -558,18 +606,20 @@ scenario_5 <-
   )
 ```
 
-```{r roc_sc5_vis, results='markup', echo=TRUE}
-RRatepol::plot_roc(data_source = scenario_5)
+```{r}
+#| label: plot scenario 4
+RRatepol::plot_roc(data_source = scenario_4)
 ```
 
 We see a substantial increase in temporal uncertainty around the RoC scores (grey shadow), indicating a loss of temporal precision.
 
-### Scenario 6 A - Estimating RoC with the new "Moving-window" approach
+### Scenario 5 A - Estimating RoC with the new "Moving-window" approach
 
 In order to reduce the temporal uncertainty and improve temporal precision, we can apply a novel approach in RRATEPOL called "moving window". 
 
-```{r roc_sc6, results='hide', warning=FALSE, message=FALSE}
-scenario_6 <-
+```{r}
+#| label: scenario 5
+scenario_5 <-
   RRatepol::estimate_roc(
     data_source_community = data_community,
     data_source_age = data_levels_predicted,
@@ -587,27 +637,30 @@ scenario_6 <-
   )
 ```
 
-```{r roc_sc6_vis, results='markup', echo=TRUE}
-RRatepol::plot_roc(data_source = scenario_6)
+```{r}
+#| label: plot scenario 5
+RRatepol::plot_roc(data_source = scenario_5)
 ```
 
 ### Scenario 6 B - Estimating RoC with the new "Moving-window" approach and detecting peak points
 
 Throughout the record, there can be periods when the RoC will substantially change. We can detect RoC increases that are significant by identifying so called  *peak-points*. Here, we will use "Non-linear" method, which will detect significant change from a non-linear trend of RoC.
 
-```{r peak_points, results='hide', warning=FALSE}
-scenario_6_peak <-
+```{r}
+#| label: peak_points 
+scenario_5_peak <-
   RRatepol::detect_peak_points(
-    data_source = scenario_6,
+    data_source = scenario_5,
     sel_method = "trend_non_linear"
   )
 ```
 
 Now we will plot the RoC estimates showing the peak-points. So here we can see that there were rates of vegetation change throughout the record but only at certain moments in time (green dots - peak points) these changes were significant. There you go!
 
-```{r peak_points_vis, results='markup', echo=TRUE}
+```{r}
+#| label: plot peak points
 RRatepol::plot_roc(
-  data_source = scenario_6_peak,
+  data_source = scenario_5_peak,
   peaks = TRUE
 )
 ```
