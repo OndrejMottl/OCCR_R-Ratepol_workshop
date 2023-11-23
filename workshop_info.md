@@ -6,9 +6,11 @@ The workshop is going to take in person.
 
 ## When/Where
 
-### **28.11.2023 - 29.11.2023**
+### **28.11.2023** 13:00 - 18:00
 
-### **Bern University** (*exact location to be added*)
+### **29.11.2023** 8:15 - 9:30 (if needed)
+
+### **Bern University** - GIUB Room 302
 
 <br>
 
