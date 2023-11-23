@@ -52,4 +52,7 @@ render_md_and_html(file_name = "workshop_info")
 render_md_and_html(file_name = "pre_workshop")
 
 # step_by_step_guide -----
-render_md_and_html(file_name = "step_by_step_guide")
+render_md_and_html(
+  file_name = "step_by_step_guide",
+  code_download = TRUE
+)
