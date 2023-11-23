@@ -1,14 +1,18 @@
 name: "OCCR R-Ratepol workshop"
-output_dir: 'docs'
+output_dir: "docs"
 navbar:
   title: "OCCR R-Ratepol workshop"
   left:
     - text: "Workshop Information"
       href: workshop_info.html
     - text: "Pre-workshop"
-      href: pre_workshop.html      
-    - text: "A step-by-step guide"
-      href: step_by_step_guide.html
+      href: pre_workshop.html
+    - text: "A step-by-step guides"
+      menu:
+        - text: "Part 1: Geochemical data"
+          href: step_by_step_guide.html
+        - text: "Part 2: XRF data"
+          href: step_by_step_guide_2.html
   tools:
     - icon: github
       href: https://github.com/OndrejMottl/OCCR_R-Ratepol_workshop
