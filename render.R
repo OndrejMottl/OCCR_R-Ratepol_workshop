@@ -25,6 +25,7 @@ render_md_and_html <- function(
     input = here::here(
       paste0(file_name, ".qmd")
     ),
+    execute_dir = here::here(),
     output_format = "gfm",
     output_file = paste0(file_name, ".md")
   )

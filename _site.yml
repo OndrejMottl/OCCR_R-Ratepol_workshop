@@ -9,6 +9,9 @@ navbar:
       href: pre_workshop.html      
     - text: "A step-by-step guide"
       href: step_by_step_guide.html
+  tools:
+    - icon: github
+      href: https://github.com/OndrejMottl/OCCR_R-Ratepol_workshop
 output:
   html_document:
     toc: FALSE
