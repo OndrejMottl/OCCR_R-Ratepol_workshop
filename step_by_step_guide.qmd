@@ -240,6 +240,8 @@ head(data_chron_control_table)
 
 ```{r}
 #| label: display prepared chron control table
+#| echo: FALSE
+#| results: 'asis'
 pander::pandoc.table(head(data_chron_control_table))
 ```
 
@@ -519,6 +521,8 @@ data_units
 
 ```{r}
 #| label: display data units
+#| echo: FALSE
+#| results: 'asis'
 pander::pandoc.table(data_units)
 ```
 

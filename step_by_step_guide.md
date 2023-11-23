@@ -217,9 +217,14 @@ data_chron_control_table <-
 head(data_chron_control_table)
 ```
 
-``` r
-pander::pandoc.table(head(data_chron_control_table))
-```
+| chroncontrolage | error | depth | thickness | chroncontroltype | curve  |
+|:---------------:|:-----:|:-----:|:---------:|:----------------:|:------:|
+|       -60       |   1   |  0.8  |    1.6    |     Lead-210     | normal |
+|     -55.64      |   1   |  2.4  |    1.1    |     Lead-210     | normal |
+|     -51.42      |   1   |  3.5  |    1.1    |     Lead-210     | normal |
+|     -45.68      |   1   |  4.6  |    2.1    |     Lead-210     | normal |
+|     -40.04      |   1   |  6.7  |    2.2    |     Lead-210     | normal |
+|     -34.16      |   1   |  8.9  |    2.1    |     Lead-210     | normal |
 
 As this is just a toy example, we will use only the iteration multiplier (`i_multiplier`) of `0.1` to reduce the computation time. However, we strongly recommend increasing it to 5 for any normal age-depth model construction.
 
@@ -295,14 +300,14 @@ Here we see samples (e.g., 439811, 439812, 439813,…) and their possible ages (
 
 | 439811 | 439812 | 439813 | 439814 | 439815 | 439816 | 439817 | 439818 |
 |:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|
-|  -60   |  -54   |  -44   |  -37   |  -29   |  -21   |  -12   |   -5   |
-|  -60   |  -56   |  -43   |  -35   |  -28   |  -20   |  -12   |   -7   |
-|  -60   |  -54   |  -44   |  -36   |  -28   |  -20   |  -11   |   -8   |
-|  -59   |  -53   |  -44   |  -35   |  -28   |  -21   |  -11   |   -5   |
-|  -62   |  -54   |  -46   |  -35   |  -28   |  -21   |  -14   |   -5   |
-|  -62   |  -55   |  -47   |  -38   |  -28   |  -21   |  -12   |   -3   |
-|  -62   |  -54   |  -45   |  -38   |  -31   |  -21   |  -12   |   -7   |
-|  -62   |  -54   |  -44   |  -36   |  -28   |  -21   |  -12   |   -8   |
+|  -61   |  -53   |  -46   |  -37   |  -29   |  -23   |  -11   |   -8   |
+|  -61   |  -52   |  -42   |  -37   |  -30   |  -20   |  -13   |   -8   |
+|  -60   |  -53   |  -42   |  -37   |  -28   |  -19   |  -12   |   -6   |
+|  -60   |  -55   |  -44   |  -40   |  -28   |  -20   |  -11   |   0    |
+|  -60   |  -54   |  -43   |  -36   |  -28   |  -19   |  -12   |   -4   |
+|  -61   |  -53   |  -41   |  -36   |  -28   |  -19   |  -12   |   -7   |
+|  -61   |  -53   |  -44   |  -37   |  -28   |  -19   |  -15   |   0    |
+|  -61   |  -55   |  -44   |  -36   |  -28   |  -20   |  -17   |   -8   |
 
 We can visualise these “possible ages” (age-sequence) of each iteration.
 
@@ -418,10 +423,10 @@ head(data_levels_predicted)
 |:---------:|:-----:|:---:|
 |  439811   |  0.8  | -60 |
 |  439812   |  2.9  | -54 |
-|  439813   |  5.1  | -45 |
+|  439813   |  5.1  | -44 |
 |  439814   |  7.8  | -37 |
 |  439815   | 10.5  | -28 |
-|  439816   | 12.7  | -20 |
+|  439816   | 12.7  | -21 |
 
 We can visualise the median age by drawing a red line. This age is the age that is often reported in publications but in essence it represents multiple age-depth model runs with smaller or larger age uncertainties throughout the record.
 
@@ -498,9 +503,12 @@ We can check the units of individual measured values:
 data_units
 ```
 
-``` r
-pander::pandoc.table(data_units)
-```
+| variablename |       units        |
+|:------------:|:------------------:|
+|   Nitrogen   |      percent       |
+|    Carbon    |      percent       |
+|     δ15N     |  per mille air N   |
+|     δ13C     | per mille VPDB/17O |
 
 As we can see, all measured values are in difrent units. Therefore,for all scenarios, we will be using the `gower` dissimilarity coefficient (works with data in various units), and `time_standardisation` == 250 (this means that all ROC values are ‘change per 250 yr’).
 
