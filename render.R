@@ -20,6 +20,7 @@ library(here)
 render_md_and_html <- function(
     file_name,
     file_name_html = file_name,
+    toc = FALSE,
     code_download = FALSE) {
   quarto::quarto_render(
     input = here::here(
@@ -35,7 +36,8 @@ render_md_and_html <- function(
       paste0(file_name, ".qmd")
     ),
     output_format = rmarkdown::html_document(
-      code_download = code_download
+      code_download = code_download,
+      toc = toc
     ),
     output_file = here::here(
       paste0("docs/", file_name_html, ".html")
@@ -54,6 +56,13 @@ render_md_and_html(file_name = "pre_workshop")
 
 # step_by_step_guide -----
 render_md_and_html(
-  file_name = "step_by_step_guide",
-  code_download = TRUE
+  file_name = "part_1_geochemical_data",
+  code_download = TRUE,
+  toc = TRUE
+)
+
+render_md_and_html(
+  file_name = "part_2_xrf_data",
+  code_download = TRUE,
+  toc = TRUE
 )

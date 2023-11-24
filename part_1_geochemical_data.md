@@ -1,6 +1,8 @@
-# Step-by-step guide
+# Part 1 - Geochemical data
 
-This workflow should show the full strength of the [*RRatepol package*](https://hope-uib-bio.github.io/R-Ratepol-package/) for working with data types **other** than fossil pollen. It should serve as step-by-step guidance starting from downloading dataset from Neotoma, building age-depth models, to estimating rate-of-change using age uncertainty.
+This workflow should show the full strength of the [*RRatepol package*](https://hope-uib-bio.github.io/R-Ratepol-package/) for working with data types **other** than fossil pollen, specifically for **geochemical data**. It should serve as step-by-step guidance starting from downloading dataset from Neotoma, building age-depth models, to estimating rate-of-change using age uncertainty.
+
+For a workflow using **XRF data**, see [Part 2 - XRF data](https://ondrejmottl.github.io/OCCR_R-Ratepol_workshop/part_2_xrf_data.html).
 
 ⚠️**This workflow is only meant as an example**: There may be several additional steps for data preparation which should be done to properly implement RRatepol and asssess rate of change for your specific project.
 
@@ -28,7 +30,7 @@ library(here) # for working directory 🗺️
 
 Here we have selected the **Chickaree Lake** record (ID = 47613) by Higuera, Philip E. and Dunnette, Paul V.
 
-Reference paper: Dunnette, P.V., P.E. Higuera, K.K. McLauchlan, K.M. Derr, C.E. Briles, and M.H. Keefe. 2014. Biogeochemical impacts of wildfires over four millennia in a Rocky Mountain subalpine watershed. New Phytologist 203(3):900-912. \[DOI: 10.1111/nph.12828\]
+Reference paper: Dunnette, P.V., P.E. Higuera, K.K. McLauchlan, K.M. Derr, C.E. Briles, and M.H. Keefe. 2014. Biogeochemical impacts of wildfires over four millennia in a Rocky Mountain subalpine watershed. New Phytologist 203(3):900-912. DOI: 10.1111/nph.12828
 
 ``` r
 sel_dataset_download <-
@@ -120,7 +122,7 @@ data_community %>%
   ggplot2::geom_line()  
 ```
 
-<img src="step_by_step_guide_files/figure-commonmark/geochemistry%20visualise-1.png" data-fig-align="center" />
+<img src="part_1_geochemical_data_files/figure-commonmark/geochemistry%20visualise-1.png" data-fig-align="center" />
 
 ## Preparation of the levels
 
@@ -272,7 +274,7 @@ Bchron:::plot.BchronologyRun(sel_bchron) + # or just simple plot(sel_bchron)
   )
 ```
 
-<img src="step_by_step_guide_files/figure-commonmark/plot%20Bchron-1.png" data-fig-align="center" />
+<img src="part_1_geochemical_data_files/figure-commonmark/plot%20Bchron-1.png" data-fig-align="center" />
 
 #### Predict ages
 
@@ -300,14 +302,14 @@ Here we see samples (e.g., 439811, 439812, 439813,…) and their possible ages (
 
 | 439811 | 439812 | 439813 | 439814 | 439815 | 439816 | 439817 | 439818 |
 |:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|
-|  -61   |  -53   |  -46   |  -37   |  -29   |  -23   |  -11   |   -8   |
-|  -61   |  -52   |  -42   |  -37   |  -30   |  -20   |  -13   |   -8   |
-|  -60   |  -53   |  -42   |  -37   |  -28   |  -19   |  -12   |   -6   |
-|  -60   |  -55   |  -44   |  -40   |  -28   |  -20   |  -11   |   0    |
-|  -60   |  -54   |  -43   |  -36   |  -28   |  -19   |  -12   |   -4   |
-|  -61   |  -53   |  -41   |  -36   |  -28   |  -19   |  -12   |   -7   |
-|  -61   |  -53   |  -44   |  -37   |  -28   |  -19   |  -15   |   0    |
-|  -61   |  -55   |  -44   |  -36   |  -28   |  -20   |  -17   |   -8   |
+|  -61   |  -56   |  -46   |  -41   |  -31   |  -21   |  -11   |   -7   |
+|  -61   |  -54   |  -45   |  -37   |  -29   |  -22   |  -11   |   -3   |
+|  -61   |  -53   |  -46   |  -37   |  -31   |  -23   |  -12   |   -4   |
+|  -61   |  -54   |  -45   |  -37   |  -29   |  -15   |  -18   |  -10   |
+|  -61   |  -55   |  -46   |  -39   |  -29   |  -25   |  -13   |   2    |
+|  -61   |  -52   |  -44   |  -37   |  -29   |  -21   |  -13   |   2    |
+|  -60   |  -50   |  -44   |  -38   |  -29   |  -20   |  -11   |   -6   |
+|  -61   |  -56   |  -43   |  -35   |  -28   |  -20   |  -11   |   -4   |
 
 We can visualise these “possible ages” (age-sequence) of each iteration.
 
@@ -371,7 +373,7 @@ Each line is a single potential age-depth model iteration (age-sequence). Green 
 )
 ```
 
-<img src="step_by_step_guide_files/figure-commonmark/plot%20uncertainty%20matrix-1.png" data-fig-align="center" />
+<img src="part_1_geochemical_data_files/figure-commonmark/plot%20uncertainty%20matrix-1.png" data-fig-align="center" />
 
 We can visualise all age-depth “possible ages” together as the range of values. Here, each line representing one sampled depth in our record.
 
@@ -401,7 +403,7 @@ data_age_uncertainties %>%
   )
 ```
 
-<img src="step_by_step_guide_files/figure-commonmark/plot%20uncertainty%20matrix%20boxplots-1.png" data-fig-align="center" />
+<img src="part_1_geochemical_data_files/figure-commonmark/plot%20uncertainty%20matrix%20boxplots-1.png" data-fig-align="center" />
 
 Let’s take the median age of all possible ages (i.e. the estimated age from each age-depth model run) as our default.
 
@@ -435,7 +437,7 @@ fig_age_uncertainties +
   ggplot2::geom_point(
     data = data_levels_predicted,
     color = "red",
-    size = 3
+    size = 1
   ) +
   ggplot2::geom_line(
     data = data_levels_predicted,
@@ -444,7 +446,7 @@ fig_age_uncertainties +
   )
 ```
 
-<img src="step_by_step_guide_files/figure-commonmark/plot%20median%20age-1.png" data-fig-align="center" />
+<img src="part_1_geochemical_data_files/figure-commonmark/plot%20median%20age-1.png" data-fig-align="center" />
 
 ### Visualisation of our data
 
@@ -489,7 +491,7 @@ data_community %>%
   ggplot2::geom_line()
 ```
 
-<img src="step_by_step_guide_files/figure-commonmark/plot%20data%20with%20ages-1.png" data-fig-align="center" />
+<img src="part_1_geochemical_data_files/figure-commonmark/plot%20data%20with%20ages-1.png" data-fig-align="center" />
 
 ## Estimation Rate-of-Change
 
@@ -510,7 +512,7 @@ data_units
 |     δ15N     |  per mille air N   |
 |     δ13C     | per mille VPDB/17O |
 
-As we can see, all measured values are in difrent units. Therefore,for all scenarios, we will be using the `gower` dissimilarity coefficient (works with data in various units), and `time_standardisation` == 250 (this means that all ROC values are ‘change per 250 yr’).
+As we can see, all measured values are in difrent units. Therefore,for all scenarios, we will be using the `gower` dissimilarity coefficient (works with data in various units), prevent turning theim into proportions (as it does not make sense) with `tranform_to_proportions` == `FALSE`, and set `time_standardisation` == 250 (this means that all ROC values are ‘change per 250 yr’).
 
 ### Scenario 1 - Estimating RoC for each level
 
@@ -522,6 +524,7 @@ scenario_1 <-
     data_source_community = data_community,
     data_source_age = data_levels_predicted,
     dissimilarity_coefficient = "gower",
+    tranform_to_proportions = FALSE,
     time_standardisation = 250,
     working_units = "levels" # here is set to use individual levels
   )
@@ -531,7 +534,7 @@ scenario_1 <-
 RRatepol::plot_roc(data_source = scenario_1)
 ```
 
-<img src="step_by_step_guide_files/figure-commonmark/plot%20scenario%201-1.png" data-fig-align="center" />
+<img src="part_1_geochemical_data_files/figure-commonmark/plot%20scenario%201-1.png" data-fig-align="center" />
 
 ### Scenario 2 - Estimating RoC for each level with smoothing of data
 
@@ -543,6 +546,7 @@ scenario_2 <-
     data_source_community = data_community,
     data_source_age = data_levels_predicted,
     dissimilarity_coefficient = "gower",
+    tranform_to_proportions = FALSE,
     time_standardisation = 250,
     working_units = "levels",
     smooth_method = "shep" # Shepard's 5-term filter
@@ -553,9 +557,9 @@ scenario_2 <-
 RRatepol::plot_roc(data_source = scenario_2)
 ```
 
-<img src="step_by_step_guide_files/figure-commonmark/plot%20scenario%202-1.png" data-fig-align="center" />
+<img src="part_1_geochemical_data_files/figure-commonmark/plot%20scenario%202-1.png" data-fig-align="center" />
 
-We see that the absolute RoC scores are similar ut the pattern changed slightly (x-axis).
+We see that the absolute RoC scores are decreased and the pattern changed slightly (x-axis).
 
 ### Scenario 3 - Estimating RoC per bin
 
@@ -577,6 +581,7 @@ scenario_3 <-
     data_source_community = data_community,
     data_source_age = data_levels_predicted,
     dissimilarity_coefficient = "gower",
+    tranform_to_proportions = FALSE,
     working_units = "bins", # change the "bins"
     bin_size = 250, # size of a time bin
     time_standardisation = 250,
@@ -590,7 +595,7 @@ scenario_3 <-
 RRatepol::plot_roc(data_source = scenario_3)
 ```
 
-<img src="step_by_step_guide_files/figure-commonmark/plot%20scenario%203-1.png" data-fig-align="center" />
+<img src="part_1_geochemical_data_files/figure-commonmark/plot%20scenario%203-1.png" data-fig-align="center" />
 
 We will now also visualize uncertainty around the RoC scores shown by a grey shadow.We see a substantial increase in temporal uncertainty around the RoC scores (grey shadow), indicating a loss of temporal precision.
 
@@ -604,6 +609,7 @@ scenario_4 <-
   data_source_community = data_community,
     data_source_age = data_levels_predicted,
     dissimilarity_coefficient = "gower",
+    tranform_to_proportions = FALSE,
     working_units = "bins", 
     bin_size = 250, 
     time_standardisation = 250,
@@ -618,7 +624,7 @@ scenario_4 <-
 RRatepol::plot_roc(data_source = scenario_4)
 ```
 
-<img src="step_by_step_guide_files/figure-commonmark/plot%20scenario%204-1.png" data-fig-align="center" />
+<img src="part_1_geochemical_data_files/figure-commonmark/plot%20scenario%204-1.png" data-fig-align="center" />
 
 Here zou can see that the pattern chnage only slightly. This is because we are randomly sampling age with a small number of randomisations.
 
@@ -632,6 +638,7 @@ scenario_5 <-
     data_source_community = data_community,
     data_source_age = data_levels_predicted,
     dissimilarity_coefficient = "gower",
+    tranform_to_proportions = FALSE,
     working_units = "MW", # change the "MW" to apply the "moving window"
     bin_size = 250,
     number_of_shifts = 5, # number of shifts
@@ -647,7 +654,7 @@ scenario_5 <-
 RRatepol::plot_roc(data_source = scenario_5)
 ```
 
-<img src="step_by_step_guide_files/figure-commonmark/plot%20scenario%205-1.png" data-fig-align="center" />
+<img src="part_1_geochemical_data_files/figure-commonmark/plot%20scenario%205-1.png" data-fig-align="center" />
 
 ### Scenario 6 - Detecting peak points
 
@@ -670,4 +677,4 @@ RRatepol::plot_roc(
 )
 ```
 
-<img src="step_by_step_guide_files/figure-commonmark/plot%20peak%20points-1.png" data-fig-align="center" />
+<img src="part_1_geochemical_data_files/figure-commonmark/plot%20peak%20points-1.png" data-fig-align="center" />
