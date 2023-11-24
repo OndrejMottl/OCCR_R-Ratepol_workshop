@@ -265,11 +265,11 @@ head(data_levels_predicted)
 
 | sample_id | depth | age |
 |:---------:|:-----:|:---:|
-|  445127   |   0   | -65 |
-|  445128   |  0.2  | -59 |
-|  445129   |  0.4  | -54 |
+|  445127   |   0   | -64 |
+|  445128   |  0.2  | -58 |
+|  445129   |  0.4  | -53 |
 |  445130   |  0.6  | -48 |
-|  445131   |  0.8  | -43 |
+|  445131   |  0.8  | -42 |
 |  445132   |   1   | -37 |
 
 ### Visualisation of our data
@@ -386,15 +386,13 @@ RRatepol::plot_roc(data_source = scenario_2)
 
 <img src="part_2_xrf_data_files/figure-commonmark/plot%20scenario%202-1.png" data-fig-align="center" />
 
-We see that the absolute RoC scores are similar but the pattern changed slightly (x-axis).
+We see that the absolute RoC scores are decreased and the pattern changed slightly (x-axis).
 
-### Scenario 3 - Estimating RoC per bin
+### Scenario 3 - Using uncertainty matrix
 
-In order to get rid of the effect of uneven distribution of sampled depths (i.e. levels) in a record, we can bin the data.
+For RoC analysis, it is important to consider age uncertainties. For each iteration, RRatepol will randomly select one age-sequence from the uncertainty matrix (see the age-depth modelling section for more info).
 
-Specifically, we will change the `working_units` from single levels to `"bins"`. Here we select bins of 500 years each instead of the individual levels.
-
-Note that one level is randomly selected as a representation of that time bin. Because of that, we need to increase the number of randomisations. This is again a toy example for a quick computation and therefore we only do 100 randomisations. We would recommend increasing the *set_randomisations* to 10.000 for any real estimation.
+Because of that, we need to increase the number of randomisations. This is again a toy example for a quick computation and therefore we only do 100 randomisations. We would recommend increasing the *set_randomisations* to 10.000 for any real estimation.
 
 ``` r
 set_randomisations <- 100
@@ -405,13 +403,12 @@ To speed the process up, you can also set `use_parallel` == `TRUE`, which will u
 ``` r
 scenario_3 <-
   RRatepol::estimate_roc(
-    data_source_community = data_community,
+  data_source_community = data_community,
     data_source_age = data_levels_predicted,
     dissimilarity_coefficient = "chisq",
-    working_units = "bins", # change the "bins"
-    bin_size = 500, # size of a time bin
     time_standardisation = 500,
     smooth_method = "shep",
+    age_uncertainty = age_uncertainties, # Add the uncertainty matrix
     rand = set_randomisations,  # set number of randomisations
     use_parallel = TRUE # do use parallel computing
   )
@@ -423,25 +420,28 @@ RRatepol::plot_roc(data_source = scenario_3)
 
 <img src="part_2_xrf_data_files/figure-commonmark/plot%20scenario%203-1.png" data-fig-align="center" />
 
-We will now also visualize uncertainty around the RoC scores shown by a grey shadow.We see a substantial increase in temporal uncertainty around the RoC scores (grey shadow), indicating a loss of temporal precision.
+We will now also visualize uncertainty around the RoC scores shown by a grey shadow. We see a substantial increase of RoC value in certain regions, this is caused by the extremely small nubmers in age differecnes and low number of randomisations.
 
-### Scenario 4 - Estimating RoC per bin and calculating age uncertainties
+### Scenario 4 - Estimating RoC per bin
 
-For RoC analysis, it is important to consider age uncertainties. For each iteration, RRatepol will randomly select one age-sequence from the uncertainty matrix (see the age-depth modelling section for more info).
+In order to get rid of the effect of uneven distribution of sampled depths (i.e. levels) in a record, we can bin the data.
+
+Specifically, we will change the `working_units` from single levels to `"bins"`. Here we select bins of 500 years each instead of the individual levels.
+
+Note that one level is randomly selected as a representation of that time bin. Thherefore, it is important to increase the number of randomisations.
 
 ``` r
 scenario_4 <-
   RRatepol::estimate_roc(
-  data_source_community = data_community,
+    data_source_community = data_community,
     data_source_age = data_levels_predicted,
     dissimilarity_coefficient = "chisq",
-    working_units = "bins", 
-    bin_size = 500, 
+    working_units = "bins", # change the "bins"
+    bin_size = 500, # size of a time bin
     time_standardisation = 500,
     smooth_method = "shep",
     rand = set_randomisations, 
-    use_parallel = TRUE,
-    age_uncertainty = age_uncertainties # Add the uncertainty matrix
+    use_parallel = TRUE 
   )
 ```
 
@@ -451,7 +451,7 @@ RRatepol::plot_roc(data_source = scenario_4)
 
 <img src="part_2_xrf_data_files/figure-commonmark/plot%20scenario%204-1.png" data-fig-align="center" />
 
-Here zou can see that the pattern chnage only slightly. This is because we are randomly sampling age with a small number of randomisations.
+Here we can see a drastic change in the shape of RoC but a large loss of temporal precision.
 
 ### Scenario 5 - Estimating RoC with the new “Moving-window” approach
 
