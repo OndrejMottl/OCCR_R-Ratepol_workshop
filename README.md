@@ -4,7 +4,7 @@ Materials for R-Ratepol workshop with an focus on non-pollen data at Oeschger Ce
 
 ## Overview
 
-This workshop is designed to teach palynologists how to estimate rate-of-vegetation change using `{R-Ratepol}` package. We will show how to get the R package and use it in various scenarios with a not only pollen data.
+This workshop is designed to teach palynologists how to estimate rate-of-vegetation change using `{R-Ratepol}` package. We will show how to get the R package and use it in various scenarios with a geochemical and XRF data.
 
 ## Resources
 
