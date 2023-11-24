@@ -1,4 +1,4 @@
-# Step-by-step guide
+# Part 2 - XRF data
 
 This workflow should show the full strength of the [*RRatepol package*](https://hope-uib-bio.github.io/R-Ratepol-package/) for working with data types **other** than fossil pollen, specifically for **XRF data**. It should serve as step-by-step guidance starting from downloading dataset from Neotoma, building age-depth models, to estimating rate-of-change using age uncertainty.
 
@@ -265,12 +265,12 @@ head(data_levels_predicted)
 
 | sample_id | depth | age |
 |:---------:|:-----:|:---:|
-|  445127   |   0   | -64 |
-|  445128   |  0.2  | -58 |
-|  445129   |  0.4  | -53 |
-|  445130   |  0.6  | -48 |
-|  445131   |  0.8  | -42 |
-|  445132   |   1   | -37 |
+|  445127   |   0   | -65 |
+|  445128   |  0.2  | -60 |
+|  445129   |  0.4  | -55 |
+|  445130   |  0.6  | -50 |
+|  445131   |  0.8  | -45 |
+|  445132   |   1   | -40 |
 
 ### Visualisation of our data
 
