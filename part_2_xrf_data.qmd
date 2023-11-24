@@ -1,5 +1,5 @@
 ---
-title: Step-by-step guide
+title: Part 2 - XRF data
 format: 
   gfm:
     fig-width: 7
