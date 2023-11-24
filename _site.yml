@@ -10,9 +10,9 @@ navbar:
     - text: "A step-by-step guides"
       menu:
         - text: "Part 1: Geochemical data"
-          href: step_by_step_guide.html
+          href: part_1_geochemical_data.html
         - text: "Part 2: XRF data"
-          href: step_by_step_guide_2.html
+          href: part_2_xrf_data.html
   tools:
     - icon: github
       href: https://github.com/OndrejMottl/OCCR_R-Ratepol_workshop

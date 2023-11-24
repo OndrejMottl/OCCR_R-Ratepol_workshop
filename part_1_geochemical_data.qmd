@@ -1,5 +1,5 @@
 ---
-title: Step-by-step guide
+title: Part 1 - Geochemical data
 format: 
   gfm:
     fig-width: 7
@@ -21,7 +21,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-This workflow should show the full strength of the [*RRatepol package*](https://hope-uib-bio.github.io/R-Ratepol-package/) for working with data types **other** than fossil pollen. It should serve as step-by-step guidance starting from downloading dataset from Neotoma, building age-depth models, to estimating rate-of-change using age uncertainty.
+This workflow should show the full strength of the [*RRatepol package*](https://hope-uib-bio.github.io/R-Ratepol-package/) for working with data types **other** than fossil pollen, specifically for **geochemical data**. It should serve as step-by-step guidance starting from downloading dataset from Neotoma, building age-depth models, to estimating rate-of-change using age uncertainty.
+
+For a workflow using **XRF data**, see [Part 2 - XRF data](https://ondrejmottl.github.io/OCCR_R-Ratepol_workshop/part_2_xrf_data.html).
 
 ⚠️**This workflow is only meant as an example**: There may be several additional steps for data preparation which should be done to properly implement RRatepol and asssess rate of change for your specific project. 
 
@@ -64,7 +66,7 @@ ggplot2::theme_set(
 
 Here we have selected the **Chickaree Lake** record (ID = 47613) by Higuera, Philip E. and Dunnette, Paul V.
 
-Reference paper: Dunnette, P.V., P.E. Higuera, K.K. McLauchlan, K.M. Derr, C.E. Briles, and M.H. Keefe. 2014. Biogeochemical impacts of wildfires over four millennia in a Rocky Mountain subalpine watershed. New Phytologist 203(3):900-912. [DOI: 10.1111/nph.12828]
+Reference paper: Dunnette, P.V., P.E. Higuera, K.K. McLauchlan, K.M. Derr, C.E. Briles, and M.H. Keefe. 2014. Biogeochemical impacts of wildfires over four millennia in a Rocky Mountain subalpine watershed. New Phytologist 203(3):900-912. DOI: 10.1111/nph.12828
 
 ```{r}
 #| label: download dataset
@@ -452,7 +454,7 @@ fig_age_uncertainties +
   ggplot2::geom_point(
     data = data_levels_predicted,
     color = "red",
-    size = 3
+    size = 1
   ) +
   ggplot2::geom_line(
     data = data_levels_predicted,
@@ -526,7 +528,7 @@ data_units
 pander::pandoc.table(data_units)
 ```
 
-As we can see, all measured values are in difrent units. Therefore,for all scenarios, we will be using the `gower` dissimilarity coefficient (works with data in various units), and `time_standardisation` == 250 (this means that all ROC values are 'change per 250 yr').
+As we can see, all measured values are in difrent units. Therefore,for all scenarios, we will be using the `gower` dissimilarity coefficient (works with data in various units), prevent turning theim into proportions (as it does not make sense) with `tranform_to_proportions` == `FALSE`, and set `time_standardisation` == 250 (this means that all ROC values are 'change per 250 yr').
 
 ### Scenario 1 - Estimating RoC for each level
 
@@ -539,6 +541,7 @@ scenario_1 <-
     data_source_community = data_community,
     data_source_age = data_levels_predicted,
     dissimilarity_coefficient = "gower",
+    tranform_to_proportions = FALSE,
     time_standardisation = 250,
     working_units = "levels" # here is set to use individual levels
   )
@@ -560,6 +563,7 @@ scenario_2 <-
     data_source_community = data_community,
     data_source_age = data_levels_predicted,
     dissimilarity_coefficient = "gower",
+    tranform_to_proportions = FALSE,
     time_standardisation = 250,
     working_units = "levels",
     smooth_method = "shep" # Shepard's 5-term filter
@@ -571,7 +575,7 @@ scenario_2 <-
 RRatepol::plot_roc(data_source = scenario_2)
 ```
 
-We see that the absolute RoC scores are similar ut the pattern changed slightly (x-axis). 
+We see that the absolute RoC scores are decreased and the pattern changed slightly (x-axis). 
 
 ### Scenario 3 - Estimating RoC per bin
 
@@ -595,6 +599,7 @@ scenario_3 <-
     data_source_community = data_community,
     data_source_age = data_levels_predicted,
     dissimilarity_coefficient = "gower",
+    tranform_to_proportions = FALSE,
     working_units = "bins", # change the "bins"
     bin_size = 250, # size of a time bin
     time_standardisation = 250,
@@ -622,6 +627,7 @@ scenario_4 <-
   data_source_community = data_community,
     data_source_age = data_levels_predicted,
     dissimilarity_coefficient = "gower",
+    tranform_to_proportions = FALSE,
     working_units = "bins", 
     bin_size = 250, 
     time_standardisation = 250,
@@ -650,6 +656,7 @@ scenario_5 <-
     data_source_community = data_community,
     data_source_age = data_levels_predicted,
     dissimilarity_coefficient = "gower",
+    tranform_to_proportions = FALSE,
     working_units = "MW", # change the "MW" to apply the "moving window"
     bin_size = 250,
     number_of_shifts = 5, # number of shifts
