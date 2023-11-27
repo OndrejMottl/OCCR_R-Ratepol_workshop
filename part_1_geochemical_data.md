@@ -1,14 +1,14 @@
 # Part 1 - Geochemical data
 
-This workflow should show the full strength of the [*RRatepol package*](https://hope-uib-bio.github.io/R-Ratepol-package/) for working with data types **other** than fossil pollen, specifically for **geochemical data**. It should serve as step-by-step guidance starting from downloading dataset from Neotoma, building age-depth models, to estimating rate-of-change using age uncertainty.
+This workflow should show the full strength of the [*RRatepol package*](https://hope-uib-bio.github.io/R-Ratepol-package/) for working with data types **other** than fossil pollen, specifically for **geochemical data**. It should serve as step-by-step guidance starting from downloading datasets from Neotoma and building age-depth models, to estimating rate-of-change using age uncertainty.
 
 For a workflow using **XRF data**, see [Part 2 - XRF data](https://ondrejmottl.github.io/OCCR_R-Ratepol_workshop/part_2_xrf_data.html).
 
-⚠️**This workflow is only meant as an example**: There may be several additional steps for data preparation which should be done to properly implement RRatepol and asssess rate of change for your specific project.
+⚠️**This workflow is only meant as an example**: There may be several additional steps for data preparation, which should be done to properly implement RRatepol and assess the rate of change for your specific project.
 
 For a step-by-spet workflow with fossil pollen data, please see other package materials, such as [African Polled Database workshop](https://ondrejmottl.github.io/APD_R-Ratepol_workshop/index.html).
 
-Additionally, please see [**FOSSILPOL**](https://hope-uib-bio.github.io/FOSSILPOL-website/), an R-based modular workflow to process multiple fossil pollen records to create a comprehensive, standardised dataset compilation, ready for multi-record and multi-proxy analyses at various spatial and temporal scales.
+Additionally, please see [**FOSSILPOL**](https://hope-uib-bio.github.io/FOSSILPOL-website/), an R-based modular workflow to process multiple fossil pollen records to create a comprehensive, standardized dataset compilation, ready for multi-record and multi-proxy analyses at various spatial and temporal scales.
 
 ## Install packages
 
@@ -81,9 +81,9 @@ head(data_community)[, 1:5]
 |  439815   |   1.19   | 12.72  | -0.19 | -25.91 |
 |  439816   |   1.15   | 12.94  | 0.04  | -26.78 |
 
-Here, we strongly advocate that careful preparation may of the datasets (with additional steps) may be needed before using R-Ratepol!
+Here, we strongly advocate that careful preparation of the datasets (with additional steps) may be needed before using R-Ratepol!
 
-We can now try to visualise the taxa per sample_id
+We can now try to visualize the taxa per sample_id
 
 ``` r
 data_community %>%
@@ -298,20 +298,20 @@ colnames(age_uncertainties) <- data_levels$sample_id
 head(age_uncertainties, n = 8)[, 1:8]
 ```
 
-Here we see samples (e.g., 439811, 439812, 439813,…) and their possible ages (age-sequence) with each model iteration (posterior). Each age-sequence is similar but there are differences of tens or hundreds of years. We will call this *the uncertainty matrix*.
+Here we see samples (e.g., 439811, 439812, 439813,…) and their possible ages (age sequence) with each model iteration (posterior). Each age-sequence is similar but there are differences of tens or hundreds of years. We will call this *the uncertainty matrix*.
 
 | 439811 | 439812 | 439813 | 439814 | 439815 | 439816 | 439817 | 439818 |
 |:------:|:------:|:------:|:------:|:------:|:------:|:------:|:------:|
-|  -60   |  -53   |  -46   |  -40   |  -28   |  -21   |  -14   |   -4   |
-|  -61   |  -53   |  -46   |  -39   |  -28   |  -20   |  -14   |   -3   |
-|  -61   |  -54   |  -46   |  -34   |  -28   |  -22   |  -14   |   1    |
-|  -61   |  -53   |  -45   |  -37   |  -32   |  -18   |  -10   |   -1   |
-|  -61   |  -53   |  -46   |  -38   |  -28   |  -18   |  -12   |   -7   |
-|  -61   |  -53   |  -45   |  -36   |  -29   |  -23   |  -13   |   -7   |
-|  -61   |  -54   |  -45   |  -38   |  -29   |  -21   |  -14   |   -1   |
-|  -61   |  -54   |  -45   |  -38   |  -27   |  -20   |  -15   |   -5   |
+|  -60   |  -54   |  -44   |  -36   |  -27   |  -21   |  -13   |   -4   |
+|  -60   |  -54   |  -44   |  -36   |  -28   |  -21   |  -16   |   -2   |
+|  -60   |  -56   |  -44   |  -36   |  -31   |  -20   |  -11   |   -5   |
+|  -60   |  -53   |  -43   |  -34   |  -28   |  -24   |  -12   |   -6   |
+|  -60   |  -52   |  -44   |  -38   |  -27   |  -24   |  -12   |   -7   |
+|  -60   |  -55   |  -44   |  -37   |  -27   |  -20   |  -12   |   -5   |
+|  -60   |  -52   |  -44   |  -38   |  -27   |  -20   |  -13   |   0    |
+|  -60   |  -53   |  -44   |  -38   |  -26   |  -20   |  -14   |   -2   |
 
-We can visualise these “possible ages” (age-sequence) of each iteration.
+We can visualize these “possible ages” (age-sequence) of each iteration.
 
 ``` r
 # create a data.frame for plotting
@@ -330,7 +330,7 @@ data_age_uncertainties <-
   )
 ```
 
-Each line is a single potential age-depth model iteration (age-sequence). Green points represent the radiocarbon dates. Horizontal lines are depths of our samples.
+Each line is a single potential age-depth model iteration (age-sequence). Green points represent the radiocarbon dates. Horizontal lines are the depths of our samples.
 
 ``` r
 (
@@ -375,7 +375,7 @@ Each line is a single potential age-depth model iteration (age-sequence). Green 
 
 <img src="part_1_geochemical_data_files/figure-commonmark/plot%20uncertainty%20matrix-1.png" data-fig-align="center" />
 
-We can visualise all age-depth “possible ages” together as the range of values. Here, each line representing one sampled depth in our record.
+We can visualize all age-depth “possible ages” together as the range of values. Here, each line represents one sampled depth in our record.
 
 ``` r
 data_age_uncertainties %>%
@@ -423,14 +423,14 @@ head(data_levels_predicted)
 
 | sample_id | depth | age |
 |:---------:|:-----:|:---:|
-|  439811   |  0.8  | -61 |
+|  439811   |  0.8  | -60 |
 |  439812   |  2.9  | -54 |
 |  439813   |  5.1  | -44 |
 |  439814   |  7.8  | -37 |
 |  439815   | 10.5  | -28 |
 |  439816   | 12.7  | -21 |
 
-We can visualise the median age by drawing a red line. This age is the age that is often reported in publications but in essence it represents multiple age-depth model runs with smaller or larger age uncertainties throughout the record.
+We can visualize the median age by drawing a red line. This age is the age that is often reported in publications but in essence, it represents multiple age-depth model runs with smaller or larger age uncertainties throughout the record.
 
 ``` r
 fig_age_uncertainties +
@@ -512,7 +512,7 @@ data_units
 |     δ15N     |  per mille air N   |
 |     δ13C     | per mille VPDB/17O |
 
-As we can see, all measured values are in difrent units. Therefore,for all scenarios, we will be using the `gower` dissimilarity coefficient (works with data in various units), prevent turning theim into proportions (as it does not make sense) with `tranform_to_proportions` == `FALSE`, and set `time_standardisation` == 250 (this means that all ROC values are ‘change per 250 yr’).
+As we can see, all measured values are in different units. Therefore, for all scenarios, we will be using the `gower` dissimilarity coefficient (works with data in various units), prevent turning them into proportions (as it does not make sense) with `tranform_to_proportions` == `FALSE`, and set `time_standardisation` == 250 (this means that all ROC values are ‘change per 250 yr’).
 
 ### Scenario 1 - Estimating RoC for each level
 
@@ -538,7 +538,7 @@ RRatepol::plot_roc(data_source = scenario_1)
 
 ### Scenario 2 - Estimating RoC for each level with smoothing of data
 
-We do the same as in Scenario 1 but now we smooth the community data before calculating RoC. This may be usefull to mitigate the error of measumerments. Specifically, we will add `smooth_method` = “shep” (i.e. Shepard’s 5-term filter).
+We do the same as in Scenario 1 but now we smooth the community data before calculating RoC. This may be useful to mitigate the error of measurements. Specifically, we will add `smooth_method` = “shep” (i.e. Shepard’s 5-term filter).
 
 ``` r
 scenario_2 <-
@@ -563,9 +563,9 @@ We see that the absolute RoC scores are decreased and the pattern changed slight
 
 ### Scenario 3 - Using uncertainty matrix
 
-For RoC analysis, it is important to consider age uncertainties. For each iteration, RRatepol will randomly select one age-sequence from the uncertainty matrix (see the age-depth modelling section for more info).
+For RoC analysis, it is important to consider age uncertainties. For each iteration, RRatepol will randomly select one age sequence from the uncertainty matrix (see the age-depth modeling section for more info).
 
-Because of that, we need to increase the number of randomisations. This is again a toy example for a quick computation and therefore we only do 100 randomisations. We would recommend increasing the *set_randomisations* to 10.000 for any real estimation.
+Because of that, we need to increase the number of randomizations. This is again a toy example for a quick computation and therefore we only do 100 randomizations. We would recommend increasing the *set_randomisations* to 10.000 for any real estimation.
 
 ``` r
 set_randomisations <- 100
@@ -594,7 +594,7 @@ RRatepol::plot_roc(data_source = scenario_3)
 
 <img src="part_1_geochemical_data_files/figure-commonmark/plot%20scenario%203-1.png" data-fig-align="center" />
 
-We will now also visualize uncertainty around the RoC scores shown by a grey shadow. We see a substantial increase of RoC value in certain regions, this is caused by the extremely small nubmers in age differecnes and low number of randomisations.
+We will now also visualize uncertainty around the RoC scores shown by a grey shadow. We see a substantial increase in the RoC value in certain regions, this is caused by the extremely small numbers of age differences and low number of randomizations.
 
 ### Scenario 4 - Estimating RoC per bin
 
@@ -602,7 +602,7 @@ In order to get rid of the effect of uneven distribution of sampled depths (i.e.
 
 Specifically, we will change the `working_units` from single levels to `"bins"`. Here we select bins of 250 years each instead of the individual levels.
 
-Note that one level is randomly selected as a representation of that time bin. Thherefore, it is important to increase the number of randomisations.
+Note that one level is randomly selected as a representation of that time bin. Therefore, it is important to increase the number of randomizations.
 
 ``` r
 scenario_4 <-
@@ -615,6 +615,7 @@ scenario_4 <-
     bin_size = 250, # size of a time bin
     time_standardisation = 250,
     smooth_method = "shep",
+    age_uncertainty = age_uncertainties,
     rand = set_randomisations, 
     use_parallel = TRUE 
   )
@@ -658,7 +659,7 @@ RRatepol::plot_roc(data_source = scenario_5)
 
 ### Scenario 6 - Detecting peak points
 
-Throughout the record, there can be periods when the RoC will substantially change. We can detect RoC increases that are significant by identifying so called *peak-points*. Here, we will use “Non-linear” method, which will detect significant change from a non-linear trend of RoC.
+Throughout the record, there can be periods when the RoC will substantially change. We can detect RoC increases that are significant by identifying so-called *peak-points*. Here, we will use the “Non-linear” method, which will detect a significant change from a non-linear trend of RoC.
 
 ``` r
 scenario_5_peak <-
@@ -668,7 +669,7 @@ scenario_5_peak <-
   )
 ```
 
-Now we will plot the RoC estimates showing the peak-points. So here we can see that there were rates of vegetation change throughout the record but only at certain moments in time (green dots - peak points) these changes were significant. There you go!
+Now we will plot the RoC estimates showing the peak points. So here we can see that there were rates of vegetation change throughout the record but only at certain moments in time (green dots - peak points) these changes were significant. There you go!
 
 ``` r
 RRatepol::plot_roc(

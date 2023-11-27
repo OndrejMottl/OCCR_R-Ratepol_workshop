@@ -21,17 +21,17 @@ knitr::opts_chunk$set(
 )
 ```
 
-This workflow should show the full strength of the [*RRatepol package*](https://hope-uib-bio.github.io/R-Ratepol-package/) for working with data types **other** than fossil pollen, specifically for **XRF data**. It should serve as step-by-step guidance starting from downloading dataset from Neotoma, building age-depth models, to estimating rate-of-change using age uncertainty. 
+This workflow should show the full strength of the [*RRatepol package*](https://hope-uib-bio.github.io/R-Ratepol-package/) for working with data types **other** than fossil pollen, specifically for **XRF data**. It should serve as step-by-step guidance starting from downloading datasets from the Neotoma and building age-depth models, to estimating rate-of-change using age uncertainty. 
 
 For a workflow using **Geochemical data**, see [Part 1 - Geochemical data](https://ondrejmottl.github.io/OCCR_R-Ratepol_workshop/part_2_xrf_data.html).
 
-⚠️**This workflow is only meant as an example**: There may be several additional steps for data preparation which should be done to properly implement RRatepol and asssess rate of change for your specific project. 
+⚠️**This workflow is only meant as an example**: There may be several additional steps for data preparation, which should be done to properly implement RRatepol and assess the rate of change for your specific project. 
 
 ## Prerequisites
 
 Please follow the [pre-workshop instructions](https://ondrejmottl.github.io/OCCR_R-Ratepol_workshop/pre_workshop.html) to make sure all packages are installed.
 
-This is a second part of a workshop. Therefore, some steps will be ommitted and/or not explained. For all details about individual steps, see [Part 1 - Geochemical data](https://ondrejmottl.github.io/OCCR_R-Ratepol_workshop/part_2_xrf_data.html).
+This is the second part of the workshop. Therefore, some steps will be omitted and/or not explained. For all details about individual steps, see [Part 1 - Geochemical data](https://ondrejmottl.github.io/OCCR_R-Ratepol_workshop/part_2_xrf_data.html).
 
 ## Attach packages
 
@@ -111,7 +111,7 @@ head(data_community)[, 1:5]
 pander::pandoc.table(head(data_community)[, 1:5])
 ```
 
-Here, we strongly advocate that careful preparation may of the datasets (with additional steps) may be needed before using R-Ratepol!
+Here, we strongly advocate that careful preparation of the datasets (with additional steps) may be needed before using R-Ratepol!
 
 ## Preparation of the levels
 
@@ -294,7 +294,7 @@ pander::pandoc.table(head(data_levels_predicted))
 
 ### Visualisation of our data
 
-Let's now make a simple pollen diagram with proportions of the main pollen taxa (x-axis) against our estimated ages along depth (y-axis).
+Let's now make a simple diagram with proportions of the concentrations (x-axis) against our estimated ages along the depth (y-axis).
 
 ```{r}
 #| label: plot data with ages
@@ -368,7 +368,7 @@ data_units %>%
   pander::pandoc.table()
 ```
 
-As we can see, all measured values are in perecntage units. Therefore,for all scenarios, we will be using the `chisq` dissimilarity coefficient (works with closed data), and `time_standardisation` == 500 (this means that all ROC values are 'change per 500 yr').
+As we can see, all measured values are in percentage units. Therefore, for all scenarios, we will be using the `chisq` dissimilarity coefficient (works with closed data), and `time_standardisation` == 500 (this means that all ROC values are 'change per 500 yr').
 
 ### Scenario 1 - Estimating RoC for each level
 
@@ -393,7 +393,7 @@ RRatepol::plot_roc(data_source = scenario_1)
 
 ### Scenario 2 - Estimating RoC for each level with smoothing of data
 
-We do the same as in Scenario 1 but now we smooth the community data before calculating RoC. This may be usefull to mitigate the error of measumerments. Specifically, we will add `smooth_method` = "shep" (i.e. Shepard's 5-term filter).
+We do the same as in Scenario 1 but now we smooth the community data before calculating RoC. This may be useful to mitigate the error of measurement. Specifically, we will add `smooth_method` = "shep" (i.e. Shepard's 5-term filter).
 
 ```{r}
 #| label: scenario 2
@@ -417,9 +417,9 @@ We see that the absolute RoC scores are decreased and the pattern changed slight
 
 ### Scenario 3 - Using uncertainty matrix
 
-For RoC analysis, it is important to consider age uncertainties. For each iteration, RRatepol will randomly select one age-sequence from the uncertainty matrix (see the age-depth modelling section for more info). 
+For RoC analysis, it is important to consider age uncertainties. For each iteration, RRatepol will randomly select one age-sequence from the uncertainty matrix (see the age-depth modeling section for more info). 
 
-Because of that, we need to increase the number of randomisations. This is again a toy example for a quick computation and therefore we only do 100 randomisations. We would recommend increasing the *set_randomisations* to 10.000 for any real estimation. 
+Because of that, we need to increase the number of randomizations. This is again a toy example for a quick computation and therefore we only do 100 randomizations. We would recommend increasing the *set_randomisations* to 10.000 for any real estimation. 
 
 ```{r}
 #| label: set randomisations
@@ -448,7 +448,7 @@ scenario_3 <-
 RRatepol::plot_roc(data_source = scenario_3)
 ```
 
-We will now also visualize uncertainty around the RoC scores shown by a grey shadow. We see a substantial increase of RoC value in certain regions, this is caused by the extremely small nubmers in age differecnes and low number of randomisations.
+We will now also visualize uncertainty around the RoC scores shown by a grey shadow. We see a substantial increase in RoC value in certain regions, this is caused by the extremely small numbers of age differences and the low number of randomizations.
 
 ### Scenario 4 - Estimating RoC per bin
 
@@ -456,7 +456,7 @@ In order to get rid of the effect of uneven distribution of sampled depths (i.e.
 
 Specifically, we will change the `working_units` from single levels to `"bins"`. Here we select bins of 500 years each instead of the individual levels. 
 
-Note that one level is randomly selected as a representation of that time bin. Thherefore, it is important to increase the number of randomisations. 
+Note that one level is randomly selected as a representation of that time bin. Therefore, it is important to increase the number of randomizations. 
 ```{r}
 #| label: scenario 4
 scenario_4 <-
@@ -468,6 +468,7 @@ scenario_4 <-
     bin_size = 500, # size of a time bin
     time_standardisation = 500,
     smooth_method = "shep",
+    age_uncertainty = age_uncertainties,
     rand = set_randomisations, 
     use_parallel = TRUE 
   )
@@ -509,7 +510,7 @@ RRatepol::plot_roc(data_source = scenario_5)
 
 ### Scenario 6 - Detecting peak points
 
-Throughout the record, there can be periods when the RoC will substantially change. We can detect RoC increases that are significant by identifying so called  *peak-points*. Here, we will use "Non-linear" method, which will detect significant change from a non-linear trend of RoC.
+Throughout the record, there can be periods when the RoC will substantially change. We can detect RoC increases that are significant by identifying so-called *peak-points*. Here, we will use the "Non-linear" method, which will detect a significant change from a non-linear trend of RoC.
 
 ```{r}
 #| label: peak_points 
@@ -520,7 +521,7 @@ scenario_5_peak <-
   )
 ```
 
-Now we will plot the RoC estimates showing the peak-points. So here we can see that there were rates of vegetation change throughout the record but only at certain moments in time (green dots - peak points) these changes were significant. There you go!
+Now we will plot the RoC estimates showing the peak points. So here we can see that there were rates of vegetation change throughout the record but only at certain moments in time (green dots - peak points) these changes were significant. There you go!
 
 ```{r}
 #| label: plot peak points
