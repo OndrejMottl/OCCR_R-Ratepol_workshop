@@ -632,6 +632,7 @@ scenario_4 <-
     bin_size = 250, # size of a time bin
     time_standardisation = 250,
     smooth_method = "shep",
+    age_uncertainty = age_uncertainties,
     rand = set_randomisations, 
     use_parallel = TRUE 
   )
